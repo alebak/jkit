@@ -1,0 +1,32 @@
+{
+	"name": "jkit",
+	"build": {
+		"context": ".",
+		"dockerfile": "Dockerfile"
+	},
+	"mounts": [
+		"source=jkit-home,target=/home/vscode,type=volume"
+	],
+	"features": {
+		"ghcr.io/devcontainers/features/common-utils:2": {},
+		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+			"moby": "false"
+		},
+		"ghcr.io/devcontainers/features/git:1": {},
+		"ghcr.io/devcontainers/features/node:2": {}
+	},
+	"postCreateCommand": "bash ./.devcontainer/post-create.sh",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"golang.go",
+				"esbenp.prettier-vscode"
+			],
+			"settings": {
+				"go.toolsManagement.autoUpdate": true
+			}
+		}
+	},
+	"remoteUser": "vscode",
+	"shutdownAction": "stopContainer"
+}

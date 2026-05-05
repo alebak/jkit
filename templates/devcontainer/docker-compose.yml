@@ -1,0 +1,70 @@
+services: 
+  joomla:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      APACHE_RUN_USER: vscode
+      APACHE_RUN_GROUP: vscode
+      JOOMLA_DB_HOST: db
+      JOOMLA_DB_USER: ${JOOMLA_DB_USER}
+      JOOMLA_DB_PASSWORD: ${JOOMLA_DB_PASSWORD}
+      JOOMLA_DB_NAME: ${JOOMLA_DB_NAME}
+      JOOMLA_DB_PREFIX: ${JOOMLA_DB_PREFIX}
+      JOOMLA_SITE_NAME: ${JOOMLA_SITE_NAME}
+      JOOMLA_ADMIN_USER: ${JOOMLA_ADMIN_USER}
+      JOOMLA_ADMIN_USERNAME: ${JOOMLA_ADMIN_USERNAME}
+      JOOMLA_ADMIN_PASSWORD: ${JOOMLA_ADMIN_PASSWORD}
+      JOOMLA_ADMIN_EMAIL: ${JOOMLA_ADMIN_EMAIL}
+      JOOMLA_SMTP_HOST: ${JOOMLA_SMTP_HOST}
+    ports:
+      - "8080:80"
+    volumes:
+      - ..:/var/www/html
+      - ./php-custom.ini:/usr/local/etc/php/conf.d/docker-php-custom.ini
+
+  db:
+    image: mariadb:11.4.10
+    restart: no
+    env_file:
+      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}
+      MYSQL_USER: ${JOOMLA_DB_USER}
+      MYSQL_PASSWORD: ${JOOMLA_DB_PASSWORD}
+      MYSQL_DATABASE: ${JOOMLA_DB_NAME}
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+
+  mail:
+    image: axllent/mailpit
+    restart: no
+    env_file:
+      - .env
+    environment:
+      MP_DATABASE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+      TZ: UTC
+    ports:
+      - "8025:8025"
+    volumes:
+      - mail-data:/data
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: no
+    environment:
+      PMA_HOST: db
+      PMA_USER: ${JOOMLA_DB_USER}
+      PMA_PASSWORD: ${JOOMLA_DB_PASSWORD}
+    ports:
+      - "8081:80"
+
+volumes:
+  db-data:
+  mail-data:
