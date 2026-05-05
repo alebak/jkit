@@ -1,4 +1,4 @@
-FROM joomla:6.1-php8.4-apache
+FROM {{.JoomlaImage}}
 
 RUN apt-get update && apt-get install -y \
     mariadb-client \ 

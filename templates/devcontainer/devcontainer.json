@@ -1,5 +1,5 @@
 {
-	"name": "elrepuestazo.com",
+	"name": "{{.ProjectName}}",
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "joomla",
 	"workspaceFolder": "/var/www/html",
@@ -38,11 +38,7 @@
 	"postCreateCommand": "bash ./.devcontainer/post-create.sh",
 	"customizations": {
         "vscode": {
-            "extensions": [
-                "xdebug.php-debug",
-                "bmewburn.vscode-intelephense-client",
-                "esbenp.prettier-vscode"
-            ],
+            "extensions": {{json .VSCodeExtensions}},
             "settings": {
                 "launch": {
                     "version": "0.2.0",

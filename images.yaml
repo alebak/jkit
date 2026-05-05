@@ -1,0 +1,9 @@
+images:
+  - tag: joomla:6.1-php8.4-apache
+    description: "Joomla 6.1 with PHP 8.4 on Apache (Debian) — latest stable"
+  - tag: joomla:6.1-php8.5-apache
+    description: "Joomla 6.1 with PHP 8.5 on Apache (Debian) — bleeding edge"
+  - tag: joomla:5.3-php8.3-apache
+    description: "Joomla 5.3 with PHP 8.3 on Apache (Debian) — LTS stable"
+  - tag: joomla:5.3-php8.4-apache
+    description: "Joomla 5.3 with PHP 8.4 on Apache (Debian) — LTS modern"
