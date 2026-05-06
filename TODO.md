@@ -41,15 +41,15 @@
 - [x] R-EXTG-10 — Invocable por usuario, IA vía chat, o CLI
 - [x] R-EXTG-11 — Estructura base de tests (PHPUnit)
 
-## INIT — Init & Scaffold ⬜
-- [ ] R-INIT-01 — Solicitar `JOOMLA_SITE_NAME` obligatoriamente
-- [ ] R-INIT-02 — Defaults `superdev` / `superpassword`
-- [ ] R-INIT-03 — Modo interactivo (`jkit init`) y parametrizado (`jkit init --name ...`)
-- [ ] R-INIT-04 — Auto-detectar `.zip` como quickstart o `--quickstart`
-- [ ] R-INIT-05 — Crear directorio `builds/`
-- [ ] R-INIT-06 — Orquestar DEVC → AGNT → EXTG → MCPS en `jkit init`
+## INIT — Init & Scaffold ✅
+- [x] R-INIT-01 — Solicitar `JOOMLA_SITE_NAME` obligatoriamente
+- [x] R-INIT-02 — Defaults `superdev` / `superpassword`
+- [x] R-INIT-03 — Modo interactivo (`jkit init`) y parametrizado (`jkit init --name ...`)
+- [x] R-INIT-04 — Auto-detectar `.zip` como quickstart o `--quickstart`
+- [x] R-INIT-05 — Crear directorio `builds/`
+- [x] R-INIT-06 — Orquestar DEVC → AGNT → EXTG → MCPS en `jkit init`
 - [x] R-INIT-07 — No lanzar editores
-- [ ] R-INIT-08 — No sobrescribir sin confirmación
+- [x] R-INIT-08 — No sobrescribir sin confirmación
 - [x] R-INIT-09 — No instalar todos los agentes sin preguntar
 - [x] R-INIT-10 — `jkit create [type]` funcional
 
@@ -60,7 +60,6 @@
 - [x] R-MCPS-04 — Delegar ubicación de configs MCP en `gentle-ai`
 - [x] R-MCPS-05 — No hardcodear rutas MCP
 - [x] R-MCPS-06 — No instalar MCPs no solicitados
-- [ ] R-MCPS-07 — MCPs propios para extensiones de terceros
 - [x] R-MCPS-08 — `jkit mcp add [nombre]`
 
 ## TUI — Interfaz Interactiva ⬜

@@ -124,24 +124,39 @@ func TestRootCommand_HelpContainsSubcommands(t *testing.T) {
 	}
 }
 
-func TestInitCommand_PrintsNotImplemented(t *testing.T) {
+func TestInitCommand_NonTTYWithoutFlags(t *testing.T) {
 	b := new(bytes.Buffer)
 	rootCmd.SetOut(b)
 	rootCmd.SetErr(b)
 	rootCmd.SetArgs([]string{"init"})
 
 	err := rootCmd.Execute()
-	if err != nil {
-		t.Fatal(err)
+	if err == nil {
+		t.Fatal("expected error in non-TTY mode without flags, got nil")
 	}
+	if !strings.Contains(err.Error(), "non-TTY") && !strings.Contains(err.Error(), "flags") {
+		t.Errorf("expected error about non-TTY or flags, got: %v", err)
+	}
+}
 
-	if !strings.Contains(b.String(), "not yet implemented") {
-		t.Errorf("expected 'not yet implemented', got: %s", b.String())
+func TestInitCommand_ParamModeWithName(t *testing.T) {
+	// Parameterized mode with --name should not error about TTY,
+	// but may fail on Orchestrate since CWD is not a real project dir.
+	// We just verify it doesn't hit the "non-TTY" error path.
+	b := new(bytes.Buffer)
+	rootCmd.SetOut(b)
+	rootCmd.SetErr(b)
+	rootCmd.SetArgs([]string{"init", "--name", "testproject"})
+
+	err := rootCmd.Execute()
+	// Should NOT get the "non-TTY" or "parameterized mode" error
+	if err != nil && (strings.Contains(err.Error(), "non-TTY") || strings.Contains(err.Error(), "parameterized")) {
+		t.Errorf("parameterized mode should not fail on TTY detection, got: %v", err)
 	}
 }
 
 func TestInitCommand_HasExpectedFlags(t *testing.T) {
-	expectedFlags := []string{"name", "image", "quickstart", "agents", "timezone"}
+	expectedFlags := []string{"name", "image", "quickstart", "agents", "timezone", "force"}
 	for _, name := range expectedFlags {
 		flag := initCmd.Flags().Lookup(name)
 		if flag == nil {
@@ -414,7 +429,7 @@ func TestInitCommand_HelpShowsFlags(t *testing.T) {
 	}
 
 	output := b.String()
-	for _, flag := range []string{"--name", "--image", "--quickstart", "--agents", "--timezone"} {
+	for _, flag := range []string{"--name", "--image", "--quickstart", "--agents", "--timezone", "--force"} {
 		if !strings.Contains(output, flag) {
 			t.Errorf("expected --help to mention %q, got: %s", flag, output)
 		}
