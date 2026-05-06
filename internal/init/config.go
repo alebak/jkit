@@ -16,13 +16,13 @@ import (
 )
 
 const (
-	// Default images.yaml remote URL (DD-03: remote-first with local cache).
+	// Default images.yaml remote URL (DD-03: remote-first, no local file dependency).
 	imagesRemoteURL = "https://raw.githubusercontent.com/alebak/jkit/main/images.yaml"
 
-	// Local cache path for offline use (R-DEVC-13).
-	imagesCacheFile = ".jkit/images.yaml"
+	// Local cache path in user's home for offline use (R-DEVC-13).
+	imagesCacheFile = ".cache/jkit/images.yaml"
 
-	// Max cache age before warning about staleness.
+	// Max cache age before refreshing from remote.
 	imagesCacheMaxAge = 24 * time.Hour
 )
 
@@ -91,37 +91,24 @@ func (c InitConfig) ToDevcontainerData() devcontainer.DevcontainerData {
 
 // LoadImages loads Joomla images from the following cascade (DD-03):
 //
-//  1. ./images.yaml in the current directory (when running from repo)
-//  2. .jkit/images.yaml local cache (from previous remote fetch)
-//  3. Remote fetch from imagesRemoteURL, cached to .jkit/images.yaml
-//  4. Built-in defaultImages as last resort
+//  1. Remote fetch from imagesRemoteURL, cached to ~/.cache/jkit/images.yaml
+//  2. Local cache (from previous fetch)
+//  3. Built-in defaultImages as last resort
 //
-// Returns images and any staleness warning.
+// The binary ships standalone — no images.yaml alongside it.
 func LoadImages() ([]ImageEntry, error) {
-	// 1. Try filesystem (shipped alongside binary or in repo)
-	if images, ok := loadFromPath("images.yaml"); ok {
-		return images, nil
-	}
-
-	// 2. Try local cache
-	if images, ok := loadFromPath(imagesCacheFile); ok {
-		// Check staleness
-		if info, err := os.Stat(imagesCacheFile); err == nil {
-			if time.Since(info.ModTime()) > imagesCacheMaxAge {
-				// Cache is stale, try remote fetch in background next time.
-				// For now, return cached images with a stale note.
-				_ = refreshCache() // best-effort background refresh
-			}
-		}
-		return images, nil
-	}
-
-	// 3. Try remote fetch + cache
+	// 1. Try remote fetch + cache
 	if images, ok := fetchRemoteImages(); ok {
 		return images, nil
 	}
 
-	// 4. Built-in defaults
+	// 2. Try local cache from ~/.cache/jkit/
+	cachePath := filepath.Join(userHomeDir(), imagesCacheFile)
+	if images, ok := loadFromPath(cachePath); ok {
+		return images, nil
+	}
+
+	// 3. Built-in defaults
 	return defaultImages, nil
 }
 
@@ -138,7 +125,8 @@ func loadFromPath(path string) ([]ImageEntry, bool) {
 	return images, true
 }
 
-// fetchRemoteImages fetches images.yaml from the remote URL and caches it.
+// fetchRemoteImages fetches images.yaml from the remote URL and caches it
+// to ~/.cache/jkit/images.yaml.
 func fetchRemoteImages() ([]ImageEntry, bool) {
 	resp, err := httpGet(imagesRemoteURL)
 	if err != nil {
@@ -156,23 +144,15 @@ func fetchRemoteImages() ([]ImageEntry, bool) {
 		return nil, false
 	}
 
-	// Cache to .jkit/
-	if err := os.MkdirAll(filepath.Dir(imagesCacheFile), 0755); err == nil {
-		_ = os.WriteFile(imagesCacheFile, data, 0644)
+	// Cache to ~/.cache/jkit/
+	cachePath := filepath.Join(userHomeDir(), imagesCacheFile)
+	if err := os.MkdirAll(filepath.Dir(cachePath), 0755); err == nil {
+		_ = os.WriteFile(cachePath, data, 0644)
 	}
 
 	return images, true
 }
 
-// refreshCache attempts to refresh the cache from the remote URL.
-func refreshCache() error {
-	images, ok := fetchRemoteImages()
-	if !ok {
-		return fmt.Errorf("failed to refresh images cache")
-	}
-	_ = images
-	return nil
-}
 
 // parseImagesYAML parses images.yaml bytes into ImageEntry slice.
 func parseImagesYAML(data []byte) ([]ImageEntry, error) {
@@ -184,6 +164,15 @@ func parseImagesYAML(data []byte) ([]ImageEntry, error) {
 		return nil, fmt.Errorf("images.yaml: empty images list")
 	}
 	return f.Images, nil
+}
+
+// userHomeDir returns the user's home directory, or "." if unavailable.
+func userHomeDir() string {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return "."
+	}
+	return home
 }
 
 var httpGet = func(url string) (*http.Response, error) {
