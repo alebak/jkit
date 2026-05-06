@@ -3,8 +3,6 @@ package jkit
 import "embed"
 
 //go:embed templates/devcontainer/*
-//go:embed templates/devcontainer/.env
-//go:embed templates/devcontainer/.env.example
 var DevcontainerFS embed.FS
 
 //go:embed templates/agents/*.sh
@@ -20,3 +18,6 @@ var SkillsFS embed.FS
 //go:embed templates/extensions/template
 //go:embed templates/extensions/package
 var ExtensionsFS embed.FS
+
+//go:embed templates/mcp/*.json
+var McpFS embed.FS

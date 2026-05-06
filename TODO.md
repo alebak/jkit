@@ -53,15 +53,15 @@
 - [x] R-INIT-09 — No instalar todos los agentes sin preguntar
 - [x] R-INIT-10 — `jkit create [type]` funcional
 
-## MCPS — MCP Manager ⬜
-- [ ] R-MCPS-01 — MCP de Playwright por defecto
-- [ ] R-MCPS-02 — MCP de base de datos (MariaDB/MySQL) por defecto
-- [ ] R-MCPS-03 — Xdebug en modo `trace`/`profile`
-- [ ] R-MCPS-04 — Delegar ubicación de configs MCP en `gentle-ai`
-- [ ] R-MCPS-05 — No hardcodear rutas MCP
-- [ ] R-MCPS-06 — No instalar MCPs no solicitados
+## MCPS — MCP Manager ✅
+- [x] R-MCPS-01 — MCP de Playwright por defecto
+- [x] R-MCPS-02 — MCP de base de datos (MariaDB/MySQL) por defecto
+- [x] R-MCPS-03 — Xdebug en modo `trace`/`profile`
+- [x] R-MCPS-04 — Delegar ubicación de configs MCP en `gentle-ai`
+- [x] R-MCPS-05 — No hardcodear rutas MCP
+- [x] R-MCPS-06 — No instalar MCPs no solicitados
 - [ ] R-MCPS-07 — MCPs propios para extensiones de terceros
-- [ ] R-MCPS-08 — `jkit mcp add [nombre]`
+- [x] R-MCPS-08 — `jkit mcp add [nombre]`
 
 ## TUI — Interfaz Interactiva ⬜
 - [ ] Huh — Integrar `huh` (Charmbracelet) para `jkit init` interactivo

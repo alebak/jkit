@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "mariadb": {
+      "command": "npx",
+      "args": ["@anthropic/mcp-server-mysql"],
+      "env": {
+        "MYSQL_HOST": "db",
+        "MYSQL_USER": "${JOOMLA_DB_USER}",
+        "MYSQL_PASSWORD": "${JOOMLA_DB_PASSWORD}",
+        "MYSQL_DATABASE": "${JOOMLA_DB_NAME}"
+      }
+    }
+  }
+}

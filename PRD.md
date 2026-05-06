@@ -1,8 +1,8 @@
 # JKit — Product Requirements Document
 
-**Versión:** 0.1
-**Fecha:** 2026-05-04
-**Autor:** Alejandro Arroyave Valencia — alebak@ximware.com
+**Versión:** 0.1 \
+**Fecha:** 2026-05-04 \
+**Autor:** Alejandro Arroyave Valencia — alebak@ximware.com \
 **Estado:** Borrador activo
 
 ---

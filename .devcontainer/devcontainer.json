@@ -20,7 +20,9 @@
 		"vscode": {
 			"extensions": [
 				"golang.go",
-				"esbenp.prettier-vscode"
+				"esbenp.prettier-vscode",
+				"bierner.github-markdown-preview",
+				"wayou.vscode-todo-highlight"
 			],
 			"settings": {
 				"go.toolsManagement.autoUpdate": true
