@@ -27,8 +27,8 @@ func RunInteractive(ctx context.Context) (InitConfig, error) {
 	// Start with defaults
 	cfg := DefaultInitConfig()
 
-	// Parse images.yaml for the select options
-	images, err := ParseImagesYAML(jkit.DevcontainerFS)
+	// Parse images.yaml from embedded bytes
+	images, err := ParseImagesYAML(jkit.ImagesYAML)
 	if err != nil {
 		return InitConfig{}, fmt.Errorf("loading images: %w", err)
 	}

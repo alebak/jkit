@@ -21,3 +21,6 @@ var ExtensionsFS embed.FS
 
 //go:embed templates/mcp/*.json
 var McpFS embed.FS
+
+//go:embed images.yaml
+var ImagesYAML []byte

@@ -23,7 +23,7 @@ func TestParseImagesYAML_Valid(t *testing.T) {
 		},
 	}
 
-	images, err := ParseImagesYAML(fsys)
+	images, err := ParseImagesYAML(fsys["images.yaml"].Data)
 	if err != nil {
 		t.Fatalf("ParseImagesYAML() error = %v", err)
 	}
@@ -50,7 +50,7 @@ func TestParseImagesYAML_EmptyList(t *testing.T) {
 		},
 	}
 
-	_, err := ParseImagesYAML(fsys)
+	_, err := ParseImagesYAML(fsys["images.yaml"].Data)
 	if err == nil {
 		t.Fatal("expected error for empty images list, got nil")
 	}
@@ -67,7 +67,7 @@ func TestParseImagesYAML_Malformed(t *testing.T) {
 		},
 	}
 
-	_, err := ParseImagesYAML(fsys)
+	_, err := ParseImagesYAML(fsys["images.yaml"].Data)
 	if err == nil {
 		t.Fatal("expected error for malformed YAML, got nil")
 	}
@@ -80,18 +80,16 @@ func TestParseImagesYAML_MissingKey(t *testing.T) {
 		},
 	}
 
-	_, err := ParseImagesYAML(fsys)
+	_, err := ParseImagesYAML(fsys["images.yaml"].Data)
 	if err == nil {
 		t.Fatal("expected error for missing 'images' key, got nil")
 	}
 }
 
 func TestParseImagesYAML_FileNotFound(t *testing.T) {
-	fsys := fstest.MapFS{}
-
-	_, err := ParseImagesYAML(fsys)
+	_, err := ParseImagesYAML(nil)
 	if err == nil {
-		t.Fatal("expected error for missing file, got nil")
+		t.Fatal("expected error for nil input, got nil")
 	}
 }
 
@@ -444,7 +442,7 @@ func TestParseImagesYAML_NonYAMLContent(t *testing.T) {
 		},
 	}
 
-	_, err := ParseImagesYAML(fsys)
+	_, err := ParseImagesYAML(fsys["images.yaml"].Data)
 	if err == nil {
 		t.Fatal("expected error for non-YAML content, got nil")
 	}
@@ -457,7 +455,7 @@ func TestParseImagesYAML_EmptyFile(t *testing.T) {
 		},
 	}
 
-	_, err := ParseImagesYAML(fsys)
+	_, err := ParseImagesYAML(fsys["images.yaml"].Data)
 	if err == nil {
 		t.Fatal("expected error for empty file, got nil")
 	}

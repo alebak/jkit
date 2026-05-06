@@ -143,6 +143,9 @@ func TestInitCommand_ParamModeWithName(t *testing.T) {
 	// Parameterized mode with --name should not error about TTY,
 	// but may fail on Orchestrate since CWD is not a real project dir.
 	// We just verify it doesn't hit the "non-TTY" error path.
+	dir := t.TempDir()
+	defer chdir(t, dir)()
+
 	b := new(bytes.Buffer)
 	rootCmd.SetOut(b)
 	rootCmd.SetErr(b)

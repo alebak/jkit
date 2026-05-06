@@ -5,7 +5,6 @@ package initpkg
 
 import (
 	"fmt"
-	"io/fs"
 	"os"
 	"path/filepath"
 
@@ -68,15 +67,9 @@ func (c InitConfig) ToDevcontainerData() devcontainer.DevcontainerData {
 	return d
 }
 
-// ParseImagesYAML reads and parses images.yaml from the given filesystem.
+// ParseImagesYAML reads and parses images.yaml from the given bytes.
 // It expects a top-level key "images" containing an array of ImageEntry.
-// Returns an error if the file cannot be read, the YAML is malformed,
-// the "images" key is missing, or the list is empty.
-func ParseImagesYAML(fsys fs.FS) ([]ImageEntry, error) {
-	data, err := fs.ReadFile(fsys, "images.yaml")
-	if err != nil {
-		return nil, fmt.Errorf("reading images.yaml: %w", err)
-	}
+func ParseImagesYAML(data []byte) ([]ImageEntry, error) {
 
 	var f imagesFile
 	if err := yaml.Unmarshal(data, &f); err != nil {
