@@ -21,7 +21,7 @@
 - [x] R-AGNT-01 — Instalar `gentle-ai` siempre
 - [x] R-AGNT-02 — Presentar lista de agentes disponibles
 - [x] R-AGNT-03 — Instalar solo agentes elegidos
-- [x] R-AGNT-04 — Depositar skill `prd-creator`
+- [x] R-AGNT-04 — Depositar skill `prd-creator-joomla`
 - [x] R-AGNT-05 — Plantillas bash por agente (`templates/agents/*.sh`) con `go:embed`
 - [x] R-AGNT-06 — Generar `post-create.sh` dinámicamente
 - [x] R-AGNT-07 — No instalar agentes no seleccionados

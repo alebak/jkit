@@ -10,7 +10,7 @@ import (
 	"testing/fstest"
 )
 
-const defaultSkillName = "prd-creator"
+const defaultSkillName = "prd-creator-joomla"
 
 func TestListAvailable(t *testing.T) {
 	tests := []struct {
