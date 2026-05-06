@@ -3,6 +3,11 @@ name: Release
 on:
   push:
     tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Release tag (e.g. v0.2.1)'
+        required: true
 
 permissions:
   contents: write
@@ -25,7 +30,7 @@ jobs:
         run: |
           mkdir -p dist
           GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} \
-            go build -ldflags="-s -w -X main.version=${GITHUB_REF_NAME}" \
+            go build -ldflags="-s -w -X main.version=${{ inputs.tag_name || github.ref_name }}" \
             -o dist/jkit-${{ matrix.goos }}-${{ matrix.goarch }} ./cmd/jkit/
 
       - name: Upload artifact
