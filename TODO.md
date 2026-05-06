@@ -68,3 +68,4 @@
 ## Build & Release ✅
 - [x] Install — Script `curl | bash` → `~/.local/bin/`
 - [x] Makefile — `make build`, `make test`, `make install`
+- [x] CI — GitHub Actions para build + test + release on push to main

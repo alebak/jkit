@@ -36,9 +36,9 @@ esac
 
 # Determine download URL
 if [ "$VERSION" = "latest" ]; then
-    DOWNLOAD_URL="https://github.com/${REPO}/releases/latest/download/${BIN_NAME}-${OS}-${ARCH}"
+    DOWNLOAD_URL="https://github.com/${REPO}/releases/latest/download/jkit-${OS}-${ARCH}"
 else
-    DOWNLOAD_URL="https://github.com/${REPO}/releases/download/${VERSION}/${BIN_NAME}-${OS}-${ARCH}"
+    DOWNLOAD_URL="https://github.com/${REPO}/releases/download/${VERSION}/jkit-${OS}-${ARCH}"
 fi
 
 # Create install directory

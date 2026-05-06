@@ -282,6 +282,15 @@ jkit/
 | R-MCPS-07 | El sistema DEBERÍA soportar MCPs propios para extensiones de terceros cuando estén disponibles |
 | R-MCPS-08 | El sistema DEBERÍA permitir agregar MCPs a un proyecto existente (`jkit mcp add [nombre]`) |
 
+### `RELS` — Build & Release
+
+| ID | Requisito |
+|---|---|
+| R-RELS-01 | El sistema DEBE tener un instalador `curl \| bash` que funcione en Linux y macOS |
+| R-RELS-02 | El sistema DEBE publicar binarios precompilados para linux/amd64, linux/arm64, darwin/amd64, darwin/arm64 |
+| R-RELS-03 | El sistema DEBE generar releases automáticos vía GitHub Actions en cada push a `main` con tag `v*` |
+| R-RELS-04 | El sistema DEBE ejecutar tests y `go vet` en CI antes de publicar el release |
+
 ---
 
 ## 7. Decisiones de diseño
@@ -335,6 +344,14 @@ Este enfoque elimina el gasto de tokens en boilerplate predecible y reserva la I
 **DD-07 — Módulo de Go: `github.com/alebak/jkit`** *(2026-05-05)*
 
 El módulo de Go sigue la convención estándar del ecosistema: ruta al repositorio público. Confirmado en `git remote`: `github.com/alebak/jkit`. Es un proyecto personal bajo la cuenta `alebak`, no bajo la organización `ximware`. Este valor no debe cambiarse después de establecido ya que afecta todos los import paths internos del proyecto.
+
+---
+
+**DD-08 — CI/CD con GitHub Actions para releases automáticos** *(2026-05-06)*
+
+Se implementó un workflow de GitHub Actions (`.github/workflows/release.yml`) que en cada push a `main` con tag `v*` compila binarios para 4 plataformas (linux/amd64, linux/arm64, darwin/amd64, darwin/arm64) usando una matriz de build, ejecuta tests y `go vet`, y publica los artifacts como release automático.
+
+El instalador `curl | bash` descarga el binario correcto según OS/arch desde la URL del release. Esto permite distribuir JKit sin requerir Go instalado en la máquina destino.
 
 ---
 
