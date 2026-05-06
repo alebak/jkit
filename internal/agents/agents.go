@@ -76,31 +76,44 @@ func ListAvailable(ctx context.Context, fsys fs.FS) ([]string, error) {
 	return agents, nil
 }
 
-// DeploySkill deploys the named skill into skillDir.
-// It copies the embedded SKILL.md to .jkit/agents/skills/{skillName}/
+// DeploySkill copies the embedded skill to .jkit/agents/skills/{skillName}/
 // in the project directory and creates a symlink from skillDir to that location.
 func DeploySkill(ctx context.Context, projectDir, skillDir, skillName string) error {
+	if err := CopySkill(ctx, projectDir, skillName); err != nil {
+		return err
+	}
+	return LinkSkill(ctx, projectDir, skillDir, skillName)
+}
+
+// CopySkill copies the embedded SKILL.md for the named skill into
+// .jkit/agents/skills/{skillName}/ in the project directory.
+// It does NOT create symlinks — use LinkSkill for that.
+func CopySkill(ctx context.Context, projectDir, skillName string) error {
 	if err := ctx.Err(); err != nil {
 		return err
 	}
-	// Create .jkit/agents/skills/{skillName}/ in the project directory
 	jkitSkillDir := filepath.Join(projectDir, ".jkit", "agents", "skills", skillName)
 	if err := os.MkdirAll(jkitSkillDir, 0755); err != nil {
 		return fmt.Errorf("creating skill directory: %w", err)
 	}
-
-	// Copy SKILL.md from embedded assets
 	skillContent, err := jkit.SkillsFS.ReadFile("templates/skills/" + skillName + "/SKILL.md")
 	if err != nil {
 		return fmt.Errorf("reading embedded skill: %w", err)
 	}
-
 	targetPath := filepath.Join(jkitSkillDir, "SKILL.md")
 	if err := os.WriteFile(targetPath, skillContent, 0644); err != nil {
 		return fmt.Errorf("writing SKILL.md: %w", err)
 	}
+	return nil
+}
 
-	// Create or recreate the symlink from the agent's skill dir
+// LinkSkill creates a symlink from the agent's skill directory to the
+// project's .jkit/agents/skills/{skillName}/ directory.
+func LinkSkill(ctx context.Context, projectDir, skillDir, skillName string) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	jkitSkillDir := filepath.Join(projectDir, ".jkit", "agents", "skills", skillName)
 	symlinkPath := filepath.Join(skillDir, skillName)
 	if err := os.Remove(symlinkPath); err != nil && !os.IsNotExist(err) {
 		return fmt.Errorf("removing existing symlink: %w", err)
@@ -108,7 +121,6 @@ func DeploySkill(ctx context.Context, projectDir, skillDir, skillName string) er
 	if err := os.MkdirAll(skillDir, 0755); err != nil {
 		return fmt.Errorf("creating agent skill directory: %w", err)
 	}
-
 	rel, err := filepath.Rel(skillDir, jkitSkillDir)
 	if err != nil {
 		return fmt.Errorf("computing relative path: %w", err)
@@ -116,6 +128,5 @@ func DeploySkill(ctx context.Context, projectDir, skillDir, skillName string) er
 	if err := os.Symlink(rel, symlinkPath); err != nil {
 		return fmt.Errorf("creating symlink: %w", err)
 	}
-
 	return nil
 }

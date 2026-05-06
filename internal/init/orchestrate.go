@@ -75,21 +75,10 @@ func Orchestrate(ctx context.Context, cfg InitConfig) error {
 		trackCleanup(path)
 	}
 
-	// Step 2: AGNT — Deploy skills for each selected agent
+	// Step 2: AGNT — Copy skills to project (symlinks created in devcontainer)
 	if len(cfg.Agents) > 0 {
-		for _, agentName := range cfg.Agents {
-			if err := ctx.Err(); err != nil {
-				return rollback(createdFiles, err)
-			}
-
-			skillDir, err := agents.SkillDirFor(ctx, agentName)
-			if err != nil {
-				return rollback(createdFiles, fmt.Errorf("AGNT resolve %s: %w", agentName, err))
-			}
-
-			if err := agents.DeploySkill(ctx, cwd, skillDir, "prd-creator-joomla"); err != nil {
-				return rollback(createdFiles, fmt.Errorf("AGNT deploy %s: %w", agentName, err))
-			}
+		if err := agents.CopySkill(ctx, cwd, "prd-creator-joomla"); err != nil {
+			return rollback(createdFiles, fmt.Errorf("AGNT copy skills: %w", err))
 		}
 	}
 
