@@ -1,9 +1,9 @@
 # JKit — Product Requirements Document
 
-**Versión:** 0.2
-**Fecha:** 2026-05-06
+**Versión:** 0.1
+**Fecha:** 2026-05-04
 **Autor:** Alejandro Arroyave Valencia — alebak@ximware.com
-**Estado:** En desarrollo — ✅ DEVC (devcontainer) | ✅ AGNT (agentes) | ✅ EXTG (extensiones) | ⬜ INIT (init) | ⬜ MCPS (MCP)
+**Estado:** Borrador activo
 
 ---
 
@@ -206,81 +206,81 @@ jkit/
 
 ## 6. Requisitos
 
-### `INIT` — Init &amp; Scaffold
+### `INIT` — Init & Scaffold
 
-| ID | ✅ | Requisito |
-|---|----|---|
-| R-INIT-01 | ⬜ | El sistema DEBE solicitar obligatoriamente el nombre del sitio (`JOOMLA_SITE_NAME`) |
-| R-INIT-02 | ⬜ | El sistema DEBE usar `superdev` / `superpassword` como credenciales de superadministrador si el usuario no las especifica |
-| R-INIT-03 | ⬜ | El sistema DEBE funcionar en modo interactivo (`jkit init`) y en modo parametrizado (`jkit init --name ...`) |
-| R-INIT-04 | ⬜ | El sistema DEBE detectar automáticamente un `.zip` en el directorio actual como quickstart, o aceptarlo explícitamente con `--quickstart` |
-| R-INIT-05 | ⬜ | El sistema DEBE crear el directorio `builds/` en la raíz del proyecto |
-| R-INIT-06 | ⬜ | El sistema DEBE invocar los componentes `DEVC`, `AGNT`, `EXTG` y `MCPS` en orden durante la inicialización |
-| R-INIT-07 | ✅ | El sistema NO DEBE lanzar ni detectar editores de código o IDEs |
-| R-INIT-08 | ⬜ | El sistema NO DEBE sobreescribir archivos existentes sin confirmación explícita del usuario |
-| R-INIT-09 | ✅ | El sistema NO DEBE asumir que el usuario quiere instalar todos los agentes disponibles |
-| R-INIT-10 | ✅ | El sistema DEBERÍA soportar `jkit create [component\|module\|plugin\|template\|library\|package]` para agregar extensiones a un proyecto existente, invocable por el usuario, por la IA vía chat o vía CLI |
+| ID | Requisito |
+|---|---|
+| R-INIT-01 | El sistema DEBE solicitar obligatoriamente el nombre del sitio (`JOOMLA_SITE_NAME`) |
+| R-INIT-02 | El sistema DEBE usar `superdev` / `superpassword` como credenciales de superadministrador si el usuario no las especifica |
+| R-INIT-03 | El sistema DEBE funcionar en modo interactivo (`jkit init`) y en modo parametrizado (`jkit init --name ...`) |
+| R-INIT-04 | El sistema DEBE detectar automáticamente un `.zip` en el directorio actual como quickstart, o aceptarlo explícitamente con `--quickstart` |
+| R-INIT-05 | El sistema DEBE crear el directorio `builds/` en la raíz del proyecto |
+| R-INIT-06 | El sistema DEBE invocar los componentes `DEVC`, `AGNT`, `EXTG` y `MCPS` en orden durante la inicialización |
+| R-INIT-07 | El sistema NO DEBE lanzar ni detectar editores de código o IDEs |
+| R-INIT-08 | El sistema NO DEBE sobreescribir archivos existentes sin confirmación explícita del usuario |
+| R-INIT-09 | El sistema NO DEBE asumir que el usuario quiere instalar todos los agentes disponibles |
+| R-INIT-10 | El sistema DEBERÍA soportar `jkit create [component\|module\|plugin\|template\|library\|package]` para agregar extensiones a un proyecto existente, invocable por el usuario, por la IA vía chat o vía CLI |
 
 ### `DEVC` — Dev Container
 
-| ID | ✅ | Requisito |
-|---|----|---|
-| R-DEVC-01 | ✅ | El sistema DEBE generar la configuración `.devcontainer/` completa: `devcontainer.json`, `docker-compose.yml`, `Dockerfile`, `.env`, `.env.example`, `php-custom.ini`, `post-create.sh` |
-| R-DEVC-02 | ✅ | El sistema DEBE sustituir en los templates los valores capturados en `jkit init`: `{{.ProjectName}}`, `{{.JoomlaImage}}`, `{{.Timezone}}` |
-| R-DEVC-03 | ✅ | El sistema DEBE incluir los servicios: Joomla (Apache), MariaDB, phpMyAdmin, Mailpit |
-| R-DEVC-04 | ✅ | El sistema DEBE habilitar Xdebug preconfigurado en el contenedor para uso manual del desarrollador |
-| R-DEVC-05 | ✅ | El sistema DEBE generar `.env` con las credenciales del proyecto y `.env.example` sin valores sensibles |
-| R-DEVC-06 | ✅ | El sistema DEBE agregar `.env` al `.gitignore` automáticamente |
-| R-DEVC-07 | ✅ | El sistema DEBE presentar al usuario una lista de imágenes base curadas, leída desde `images.yaml` en el repositorio de JKit |
-| R-DEVC-08 | ✅ | El sistema DEBE permitir al usuario ingresar manualmente una imagen si ninguna de la lista le conviene |
-| R-DEVC-09 | ✅ | El sistema DEBE usar exclusivamente imágenes Apache + Debian como opciones curadas |
-| R-DEVC-10 | ✅ | El sistema NO DEBE modificar una configuración `.devcontainer/` ya existente sin confirmación del usuario |
-| R-DEVC-11 | ✅ | El sistema NO DEBE asumir una versión fija de Joomla o PHP |
-| R-DEVC-12 | ✅ | El sistema DEBERÍA incluir extensiones de VSCode por defecto (Xdebug, Intelephense, Prettier) pero permitir agregar más |
-| R-DEVC-13 | ⬜ | El sistema DEBERÍA cachear `images.yaml` localmente para funcionar sin conexión, con aviso de desactualización |
+| ID | Requisito |
+|---|---|
+| R-DEVC-01 | El sistema DEBE generar la configuración `.devcontainer/` completa: `devcontainer.json`, `docker-compose.yml`, `Dockerfile`, `.env`, `.env.example`, `php-custom.ini`, `post-create.sh` |
+| R-DEVC-02 | El sistema DEBE sustituir en los templates los valores capturados en `jkit init`: `{{.ProjectName}}`, `{{.JoomlaImage}}`, `{{.Timezone}}` |
+| R-DEVC-03 | El sistema DEBE incluir los servicios: Joomla (Apache), MariaDB, phpMyAdmin, Mailpit |
+| R-DEVC-04 | El sistema DEBE habilitar Xdebug preconfigurado en el contenedor para uso manual del desarrollador |
+| R-DEVC-05 | El sistema DEBE generar `.env` con las credenciales del proyecto y `.env.example` sin valores sensibles |
+| R-DEVC-06 | El sistema DEBE agregar `.env` al `.gitignore` automáticamente |
+| R-DEVC-07 | El sistema DEBE presentar al usuario una lista de imágenes base curadas, leída desde `images.yaml` en el repositorio de JKit |
+| R-DEVC-08 | El sistema DEBE permitir al usuario ingresar manualmente una imagen si ninguna de la lista le conviene |
+| R-DEVC-09 | El sistema DEBE usar exclusivamente imágenes Apache + Debian como opciones curadas |
+| R-DEVC-10 | El sistema NO DEBE modificar una configuración `.devcontainer/` ya existente sin confirmación del usuario |
+| R-DEVC-11 | El sistema NO DEBE asumir una versión fija de Joomla o PHP |
+| R-DEVC-12 | El sistema DEBERÍA incluir extensiones de VSCode por defecto (Xdebug, Intelephense, Prettier) pero permitir agregar más |
+| R-DEVC-13 | El sistema DEBERÍA cachear `images.yaml` localmente para funcionar sin conexión, con aviso de desactualización |
 
 ### `AGNT` — Agentes
 
-| ID | ✅ | Requisito |
-|---|----|---|
-| R-AGNT-01 | ✅ | El sistema DEBE instalar `gentle-ai` siempre, sin excepción |
-| R-AGNT-02 | ✅ | El sistema DEBE presentar al usuario la lista de agentes soportados para que elija cuáles instalar |
-| R-AGNT-03 | ✅ | El sistema DEBE instalar únicamente los agentes que el usuario eligió |
-| R-AGNT-04 | ✅ | El sistema DEBE depositar el skill `prd-creator` en el proyecto para que `gentle-ai` lo gestione |
-| R-AGNT-05 | ✅ | El sistema DEBE usar plantillas bash por agente (`templates/agents/*.sh`), embebidas en el binario con Go `embed` |
-| R-AGNT-06 | ✅ | El sistema DEBE generar dinámicamente `post-create.sh` concatenando las plantillas de los agentes elegidos |
-| R-AGNT-07 | ✅ | El sistema NO DEBE instalar agentes que el usuario no seleccionó |
-| R-AGNT-08 | ✅ | El sistema NO DEBE hardcodear rutas o directorios específicos de cada agente |
-| R-AGNT-09 | ✅ | El sistema DEBERÍA permitir agregar o quitar agentes en un proyecto existente (`jkit agents add [agente]`, `jkit agents remove [agente]`) |
+| ID | Requisito |
+|---|---|
+| R-AGNT-01 | El sistema DEBE instalar `gentle-ai` siempre, sin excepción |
+| R-AGNT-02 | El sistema DEBE presentar al usuario la lista de agentes soportados para que elija cuáles instalar |
+| R-AGNT-03 | El sistema DEBE instalar únicamente los agentes que el usuario eligió |
+| R-AGNT-04 | El sistema DEBE depositar el skill `prd-creator` en el proyecto para que `gentle-ai` lo gestione |
+| R-AGNT-05 | El sistema DEBE usar plantillas bash por agente (`templates/agents/*.sh`), embebidas en el binario con Go `embed` |
+| R-AGNT-06 | El sistema DEBE generar dinámicamente `post-create.sh` concatenando las plantillas de los agentes elegidos |
+| R-AGNT-07 | El sistema NO DEBE instalar agentes que el usuario no seleccionó |
+| R-AGNT-08 | El sistema NO DEBE hardcodear rutas o directorios específicos de cada agente |
+| R-AGNT-09 | El sistema DEBERÍA permitir agregar o quitar agentes en un proyecto existente (`jkit agents add [agente]`, `jkit agents remove [agente]`) |
 
 ### `EXTG` — Extension Generator
 
-| ID | ✅ | Requisito |
-|---|----|---|
-| R-EXTG-01 | ✅ | El sistema DEBE soportar los tipos: `component`, `module`, `plugin`, `template`, `library`, `package` |
-| R-EXTG-02 | ✅ | El sistema DEBE generar el skeleton en la ruta correcta dentro de la estructura de Joomla según el tipo de extensión |
-| R-EXTG-03 | ✅ | El sistema DEBE aplicar las convenciones de nomenclatura de Joomla (`com_`, `mod_`, `plg_`, etc.) |
-| R-EXTG-04 | ✅ | El sistema DEBE usar namespaces PSR-4 correctos según Joomla 5/6 |
-| R-EXTG-05 | ✅ | El sistema DEBE soportar múltiples extensiones en el mismo proyecto |
-| R-EXTG-06 | ✅ | El sistema DEBE empaquetar cualquier extensión como `.zip` en `builds/` con `jkit build [nombre]` |
-| R-EXTG-07 | ⬜ | El sistema DEBE agrupar extensiones existentes del proyecto en un único `.zip` instalable cuando el tipo es `package` |
-| R-EXTG-08 | ✅ | El sistema NO DEBE generar código compatible con Joomla 3 o anteriores |
-| R-EXTG-09 | ✅ | El sistema NO DEBE sobreescribir una extensión existente sin confirmación |
-| R-EXTG-10 | ✅ | El sistema DEBERÍA ser invocable por el usuario, por la IA vía chat o vía CLI sin diferencia de resultado |
-| R-EXTG-11 | ✅ | El sistema DEBERÍA generar estructura base de tests para la extensión creada, siguiendo las convenciones de `gentle-ai` |
+| ID | Requisito |
+|---|---|
+| R-EXTG-01 | El sistema DEBE soportar los tipos: `component`, `module`, `plugin`, `template`, `library`, `package` |
+| R-EXTG-02 | El sistema DEBE generar el skeleton en la ruta correcta dentro de la estructura de Joomla según el tipo de extensión |
+| R-EXTG-03 | El sistema DEBE aplicar las convenciones de nomenclatura de Joomla (`com_`, `mod_`, `plg_`, etc.) |
+| R-EXTG-04 | El sistema DEBE usar namespaces PSR-4 correctos según Joomla 5/6 |
+| R-EXTG-05 | El sistema DEBE soportar múltiples extensiones en el mismo proyecto |
+| R-EXTG-06 | El sistema DEBE empaquetar cualquier extensión como `.zip` en `builds/` con `jkit build [nombre]` |
+| R-EXTG-07 | El sistema DEBE agrupar extensiones existentes del proyecto en un único `.zip` instalable cuando el tipo es `package` |
+| R-EXTG-08 | El sistema NO DEBE generar código compatible con Joomla 3 o anteriores |
+| R-EXTG-09 | El sistema NO DEBE sobreescribir una extensión existente sin confirmación |
+| R-EXTG-10 | El sistema DEBERÍA ser invocable por el usuario, por la IA vía chat o vía CLI sin diferencia de resultado |
+| R-EXTG-11 | El sistema DEBERÍA generar estructura base de tests para la extensión creada, siguiendo las convenciones de `gentle-ai` |
 
 ### `MCPS` — MCP Manager
 
-| ID | ✅ | Requisito |
-|---|----|---|
-| R-MCPS-01 | ⬜ | El sistema DEBE instalar y configurar el MCP de Playwright por defecto |
-| R-MCPS-02 | ⬜ | El sistema DEBE instalar y configurar el MCP de base de datos (MariaDB/MySQL) por defecto |
-| R-MCPS-03 | ⬜ | El sistema DEBE configurar Xdebug en modo `trace`/`profile` para que los agentes lean los archivos generados como contexto de depuración |
-| R-MCPS-04 | ⬜ | El sistema DEBE delegar en `gentle-ai` la ubicación correcta de la configuración de MCPs según el agente activo |
-| R-MCPS-05 | ⬜ | El sistema NO DEBE hardcodear rutas de configuración de MCPs por agente |
-| R-MCPS-06 | ⬜ | El sistema NO DEBE instalar MCPs que el usuario no solicitó |
-| R-MCPS-07 | ⬜ | El sistema DEBERÍA soportar MCPs propios para extensiones de terceros cuando estén disponibles |
-| R-MCPS-08 | ⬜ | El sistema DEBERÍA permitir agregar MCPs a un proyecto existente (`jkit mcp add [nombre]`) |
+| ID | Requisito |
+|---|---|
+| R-MCPS-01 | El sistema DEBE instalar y configurar el MCP de Playwright por defecto |
+| R-MCPS-02 | El sistema DEBE instalar y configurar el MCP de base de datos (MariaDB/MySQL) por defecto |
+| R-MCPS-03 | El sistema DEBE configurar Xdebug en modo `trace`/`profile` para que los agentes lean los archivos generados como contexto de depuración |
+| R-MCPS-04 | El sistema DEBE delegar en `gentle-ai` la ubicación correcta de la configuración de MCPs según el agente activo |
+| R-MCPS-05 | El sistema NO DEBE hardcodear rutas de configuración de MCPs por agente |
+| R-MCPS-06 | El sistema NO DEBE instalar MCPs que el usuario no solicitó |
+| R-MCPS-07 | El sistema DEBERÍA soportar MCPs propios para extensiones de terceros cuando estén disponibles |
+| R-MCPS-08 | El sistema DEBERÍA permitir agregar MCPs a un proyecto existente (`jkit mcp add [nombre]`) |
 
 ---
 
