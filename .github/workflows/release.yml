@@ -3,6 +3,8 @@ name: Release
 on:
   push:
     tags: ['v*']
+  release:
+    types: [published]
   workflow_dispatch:
     inputs:
       tag_name:
@@ -30,7 +32,7 @@ jobs:
         run: |
           mkdir -p dist
           GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} \
-            go build -ldflags="-s -w -X main.version=${{ inputs.tag_name || github.ref_name }}" \
+            go build -ldflags="-s -w -X main.version=${{ github.event.release.tag_name || inputs.tag_name || github.ref_name }}" \
             -o dist/jkit-${{ matrix.goos }}-${{ matrix.goarch }} ./cmd/jkit/
 
       - name: Upload artifact
@@ -42,4 +44,5 @@ jobs:
       - name: Attach to release
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ github.event.release.tag_name || inputs.tag_name || github.ref_name }}
           files: dist/**
