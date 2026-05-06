@@ -87,7 +87,7 @@ func Orchestrate(ctx context.Context, cfg InitConfig) error {
 				return rollback(createdFiles, fmt.Errorf("AGNT resolve %s: %w", agentName, err))
 			}
 
-			if err := agents.DeploySkill(ctx, cwd, skillDir, "prd-creator"); err != nil {
+			if err := agents.DeploySkill(ctx, cwd, skillDir, "prd-creator-joomla"); err != nil {
 				return rollback(createdFiles, fmt.Errorf("AGNT deploy %s: %w", agentName, err))
 			}
 		}
