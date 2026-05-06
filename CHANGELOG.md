@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.3](https://github.com/alebak/jkit/compare/v0.2.2...v0.2.3) (2026-05-06)
+
+
+### Bug Fixes
+
+* add release:published trigger alongside push:tags ([92c3649](https://github.com/alebak/jkit/commit/92c364978351e9c7159a21d9d480abb558a01a3a))
+
 ## [0.2.2](https://github.com/alebak/jkit/compare/v0.2.1...v0.2.2) (2026-05-06)
 
 
