@@ -65,7 +65,6 @@
 ## TUI — Interfaz Interactiva ⬜
 - [ ] Huh — Integrar `huh` (Charmbracelet) para `jkit init` interactivo
 
-## Build & Release ⬜
-- [ ] Install — Script `curl | bash` → `~/.local/bin/`
-- [ ] Makefile — `make build`, `make test`, `make install`
-- [ ] CI — GitHub Actions para build + test + lint
+## Build & Release ✅
+- [x] Install — Script `curl | bash` → `~/.local/bin/`
+- [x] Makefile — `make build`, `make test`, `make install`

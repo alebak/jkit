@@ -6,14 +6,18 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// version is set at build time via -ldflags "-X main.version=x.y.z".
+var version = "dev"
+
 // rootCmd is the base command for the jkit CLI.
 // It is a package-level var because cobra requires subcommands
 // registered via init() in sibling files to access it through
 // rootCmd.AddCommand(). This is an accepted exception to the
 // "no global mutable state" rule — documented for reviewers.
 var rootCmd = &cobra.Command{
-	Use:   "jkit",
-	Short: "JKit — Joomla project scaffolding toolkit",
+	Use:     "jkit",
+	Version: version,
+	Short:   "JKit — Joomla project scaffolding toolkit",
 	Long: `JKit generates devcontainer configurations, extension scaffolds,
 and project templates for Joomla development.`,
 }
