@@ -1,0 +1,50 @@
+<?php
+/**
+ * @package     {{ .FullName }}
+ *
+ * @copyright   Copyright (C) {{ .Year }} {{ .Vendor }}. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+defined('_JEXEC') or die;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+/** @var \Joomla\CMS\Document\HtmlDocument $this */
+
+HTMLHelper::_('bootstrap.framework');
+
+$app   = $this->getApplication();
+$user  = $app->getIdentity();
+$uri   = \Joomla\CMS\Uri\Uri::getInstance();
+
+?><!DOCTYPE html>
+<html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
+<head>
+    <jdoc:include type="head" />
+    <link rel="stylesheet" href="<?php echo $this->baseurl; ?>/media/templates/site/<?php echo $this->template; ?>/css/template.css">
+</head>
+<body class="site <?php echo $this->direction === 'rtl' ? 'rtl' : ''; ?>">
+    <header id="header" class="header">
+        <div class="container">
+            <jdoc:include type="modules" name="position-1" style="none" />
+        </div>
+    </header>
+
+    <main id="content" class="content">
+        <div class="container">
+            <jdoc:include type="message" />
+            <jdoc:include type="component" />
+        </div>
+    </main>
+
+    <footer id="footer" class="footer">
+        <div class="container">
+            <jdoc:include type="modules" name="position-2" style="none" />
+            <p>&copy; <?php echo date('Y'); ?> {{ .Vendor }}. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <jdoc:include type="modules" name="debug" style="none" />
+</body>
+</html>

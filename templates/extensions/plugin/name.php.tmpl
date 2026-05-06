@@ -1,0 +1,25 @@
+<?php
+/**
+ * @package     {{ .PluginName }}
+ *
+ * @copyright   Copyright (C) {{ .Year }} {{ .Vendor }}. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+defined('_JEXEC') or die;
+
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Event\SubscriberInterface;
+
+class Plg{{ .GroupPascal }}{{ .ClassName }} extends CMSPlugin implements SubscriberInterface
+{
+    /**
+     * Returns subscribed events.
+     *
+     * @return  array
+     */
+    public static function getSubscribedEvents(): array
+    {
+        return [];
+    }
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="template" client="site" method="upgrade">
+    <name>{{ .FullName }}</name>
+    <author>{{ .Author }}</author>
+    <version>{{ .Version }}</version>
+    <description><![CDATA[{{ .Description }}]]></description>
+    <namespace path="src">{{ .Namespace }}</namespace>
+    <files>
+        <filename>index.php</filename>
+        <filename>component.php</filename>
+        <filename>error.php</filename>
+        <filename>offline.php</filename>
+        <folder>html</folder>
+    </files>
+    <scriptfile>script.php</scriptfile>
+</extension>

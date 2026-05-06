@@ -1,0 +1,15 @@
+<?php
+/**
+ * @package     {{ .FullName }}
+ *
+ * @copyright   Copyright (C) {{ .Year }} {{ .Vendor }}. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+defined('_JEXEC') or die;
+
+use Joomla\CMS\Helper\ModuleHelper;
+
+$moduleclassSfx = htmlspecialchars($params->get('moduleclass_sfx', ''), ENT_COMPAT, 'UTF-8');
+
+require ModuleHelper::getLayoutPath('{{ .FullName }}', $params->get('layout', 'default'));

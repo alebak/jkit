@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="library" method="upgrade">
+    <name>{{ .FullName }}</name>
+    <libraryname>{{ .Name }}</libraryname>
+    <author>{{ .Author }}</author>
+    <version>{{ .Version }}</version>
+    <description><![CDATA[{{ .Description }}]]></description>
+    <namespace path="src">{{ .Namespace }}</namespace>
+    <files>
+        <folder>services</folder>
+        <folder>src</folder>
+    </files>
+    <scriptfile>script.php</scriptfile>
+</extension>

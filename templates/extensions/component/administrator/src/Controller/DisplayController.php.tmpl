@@ -1,0 +1,36 @@
+<?php
+/**
+ * @package     {{ .FullName }}
+ *
+ * @copyright   Copyright (C) {{ .Year }} {{ .Vendor }}. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+namespace {{ .Namespace }}\Administrator\Controller;
+
+defined('_JEXEC') or die;
+
+use Joomla\CMS\MVC\Controller\BaseController;
+
+class DisplayController extends BaseController
+{
+    /**
+     * Default view.
+     *
+     * @var string
+     */
+    protected $default_view = 'dashboard';
+
+    /**
+     * Display the component.
+     *
+     * @param   bool   $cachable   If true, the view output will be cached.
+     * @param   array  $urlparams  An array of safe URL parameters and their variable types.
+     *
+     * @return  BaseController|bool
+     */
+    public function display($cachable = false, $urlparams = [])
+    {
+        return parent::display($cachable, $urlparams);
+    }
+}

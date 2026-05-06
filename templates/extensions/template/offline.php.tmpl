@@ -1,0 +1,56 @@
+<?php
+/**
+ * @package     {{ .FullName }}
+ *
+ * @copyright   Copyright (C) {{ .Year }} {{ .Vendor }}. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+defined('_JEXEC') or die;
+
+/** @var \Joomla\CMS\Document\HtmlDocument $this */
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+$app   = $this->getApplication();
+$user  = $app->getIdentity();
+
+// Get offline message
+$offlineMessage = $app->get('offline_message');
+
+?><!DOCTYPE html>
+<html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
+<head>
+    <title><?php echo htmlspecialchars($app->get('sitename')); ?></title>
+    <jdoc:include type="head" />
+</head>
+<body class="offline <?php echo $this->direction === 'rtl' ? 'rtl' : ''; ?>">
+    <div class="container">
+        <h1><?php echo htmlspecialchars($app->get('sitename')); ?></h1>
+        <?php if ($offlineMessage) : ?>
+            <p><?php echo $offlineMessage; ?></p>
+        <?php endif; ?>
+        <jdoc:include type="message" />
+        <form action="<?php echo \Joomla\CMS\Uri\Uri::root(); ?>index.php" method="post" id="form-login">
+            <fieldset>
+                <legend><?php echo \Joomla\CMS\Language\Text::_('JGLOBAL_AUTHENTICATE_LABEL'); ?></legend>
+                <div>
+                    <label for="username"><?php echo \Joomla\CMS\Language\Text::_('JGLOBAL_USERNAME'); ?></label>
+                    <input type="text" name="username" id="username" required>
+                </div>
+                <div>
+                    <label for="password"><?php echo \Joomla\CMS\Language\Text::_('JGLOBAL_PASSWORD'); ?></label>
+                    <input type="password" name="password" id="password" required>
+                </div>
+                <div>
+                    <button type="submit" name="Submit"><?php echo \Joomla\CMS\Language\Text::_('JLOGIN'); ?></button>
+                </div>
+                <input type="hidden" name="option" value="com_users">
+                <input type="hidden" name="task" value="user.login">
+                <input type="hidden" name="return" value="<?php echo base64_encode(\Joomla\CMS\Uri\Uri::root()); ?>">
+                <?php echo HTMLHelper::_('form.token'); ?>
+            </fieldset>
+        </form>
+    </div>
+</body>
+</html>

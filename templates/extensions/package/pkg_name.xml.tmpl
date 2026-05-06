@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="package" method="upgrade">
+    <name>{{ .FullName }}</name>
+    <packagename>{{ .Name }}</packagename>
+    <author>{{ .Author }}</author>
+    <version>{{ .Version }}</version>
+    <description><![CDATA[{{ .Description }}]]></description>
+    <packages>
+        <!-- Add extensions to be included in this package:
+        <package type="component" name="com_example">com_example</package>
+        -->
+    </packages>
+    <scriptfile>script.php</scriptfile>
+</extension>

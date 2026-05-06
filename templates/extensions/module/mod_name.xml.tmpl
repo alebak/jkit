@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" client="site" method="upgrade">
+    <name>{{ .FullName }}</name>
+    <author>{{ .Author }}</author>
+    <version>{{ .Version }}</version>
+    <description><![CDATA[{{ .Description }}]]></description>
+    <namespace path="src">{{ .Namespace }}</namespace>
+    <files>
+        <filename module="{{ .FullName }}">{{ .Prefix }}{{ .Name }}.php</filename>
+        <folder>services</folder>
+        <folder>tmpl</folder>
+    </files>
+    <scriptfile>script.php</scriptfile>
+</extension>

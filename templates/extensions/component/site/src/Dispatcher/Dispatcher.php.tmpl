@@ -1,0 +1,30 @@
+<?php
+/**
+ * @package     {{ .FullName }}
+ *
+ * @copyright   Copyright (C) {{ .Year }} {{ .Vendor }}. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+namespace {{ .Namespace }}\Site\Dispatcher;
+
+defined('_JEXEC') or die;
+
+use Joomla\CMS\Dispatcher\ComponentDispatcher;
+
+class Dispatcher extends ComponentDispatcher
+{
+    /**
+     * Dispatch the component.
+     *
+     * @return  void
+     */
+    public function dispatch(): void
+    {
+        // Load language
+        $this->loadLanguage();
+
+        // Dispatch the component
+        parent::dispatch();
+    }
+}

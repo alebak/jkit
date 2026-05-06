@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" method="upgrade">
+    <name>{{ .FullName }}</name>
+    <author>{{ .Author }}</author>
+    <version>{{ .Version }}</version>
+    <description><![CDATA[{{ .Description }}]]></description>
+    <namespace path="src">{{ .Namespace }}</namespace>
+    <administration>
+        <menu link="option={{ .FullName }}">{{ .Name }}</menu>
+    </administration>
+    <files>
+        <folder>administrator</folder>
+        <folder>site</folder>
+    </files>
+    <scriptfile>script.php</scriptfile>
+</extension>
