@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.2](https://github.com/alebak/jkit/compare/v0.2.1...v0.2.2) (2026-05-06)
+
+
+### Bug Fixes
+
+* add workflow_dispatch back to release workflow for manual runs ([b0060fc](https://github.com/alebak/jkit/commit/b0060fcc939cbaa1c8904499a000bd13018ec319))
+* use push tags trigger for release workflow ([f7e8299](https://github.com/alebak/jkit/commit/f7e8299809b5573c654206174f8606695f625279))
+
 ## [0.2.1](https://github.com/alebak/jkit/compare/v0.2.0...v0.2.1) (2026-05-06)
 
 
