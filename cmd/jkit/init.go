@@ -1,30 +1,47 @@
 package main
 
 import (
+	"context"
+	"fmt"
+	"os"
+
+	"github.com/alebak/jkit/internal/agents"
 	"github.com/spf13/cobra"
 )
+
+const defaultSkillName = "prd-creator"
 
 var initCmd = &cobra.Command{
 	Use:   "init",
 	Short: "Initialize a new Joomla project",
 	Long: `Interactive wizard to scaffold a .devcontainer/ configuration
 for Joomla development.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		// cobra Flag methods only error when the flag was never
-		// registered — all five flags are registered in init() below.
-		name, _ := cmd.Flags().GetString("name")
-		image, _ := cmd.Flags().GetString("image")
-		quickstart, _ := cmd.Flags().GetBool("quickstart")
-		agents, _ := cmd.Flags().GetStringSlice("agents")
-		timezone, _ := cmd.Flags().GetString("timezone")
+	RunE: func(cmd *cobra.Command, args []string) error {
+		agentsList, err := cmd.Flags().GetStringSlice("agents")
+		if err != nil {
+			return fmt.Errorf("internal: --agents flag not registered: %w", err)
+		}
 
-		_ = name
-		_ = image
-		_ = quickstart
-		_ = agents
-		_ = timezone
+		// Deploy skills for selected agents
+		if len(agentsList) > 0 {
+			cwd, err := os.Getwd()
+			if err != nil {
+				return fmt.Errorf("cannot determine current directory: %w", err)
+			}
+			for _, a := range agentsList {
+				skillDir, err := agents.SkillDirFor(context.Background(), a)
+				if err != nil {
+					cmd.PrintErrf("Warning: unknown agent %s\n", a)
+					continue
+				}
+				if err := agents.DeploySkill(context.Background(), cwd, skillDir, defaultSkillName); err != nil {
+					cmd.PrintErrf("Warning: failed to deploy skill for %s: %v\n", a, err)
+				}
+			}
+		}
 
 		cmd.Println("not yet implemented")
+		return nil
 	},
 }
 

@@ -106,6 +106,20 @@ func TestRender_PostCreateSh(t *testing.T) {
 	if !strings.Contains(output, "Gemini CLI") {
 		t.Errorf("post-create.sh should contain Gemini CLI agent script")
 	}
+
+	// Should contain agent markers for all three agents
+	if !strings.Contains(output, "# --- agent:claude ---") {
+		t.Errorf("post-create.sh should contain start marker for claude")
+	}
+	if !strings.Contains(output, "# --- end agent:claude ---") {
+		t.Errorf("post-create.sh should contain end marker for claude")
+	}
+	if !strings.Contains(output, "# --- agent:opencode ---") {
+		t.Errorf("post-create.sh should contain start marker for opencode")
+	}
+	if !strings.Contains(output, "# --- agent:gemini ---") {
+		t.Errorf("post-create.sh should contain start marker for gemini")
+	}
 }
 
 func TestRender_Dockerfile(t *testing.T) {
@@ -229,6 +243,22 @@ func TestRender_PostCreateSh_AgentFiltering(t *testing.T) {
 	}
 	if strings.Contains(output, "Gemini CLI") {
 		t.Errorf("post-create.sh should NOT contain Gemini CLI when not selected")
+	}
+
+	// Should contain agent markers per R-AGNT-05
+	if !strings.Contains(output, "# --- agent:claude ---") {
+		t.Errorf("post-create.sh should contain start marker for claude")
+	}
+	if !strings.Contains(output, "# --- end agent:claude ---") {
+		t.Errorf("post-create.sh should contain end marker for claude")
+	}
+
+	// Should NOT contain markers for unselected agents
+	if strings.Contains(output, "# --- agent:opencode ---") {
+		t.Errorf("post-create.sh should NOT contain start marker for opencode")
+	}
+	if strings.Contains(output, "# --- agent:gemini ---") {
+		t.Errorf("post-create.sh should NOT contain start marker for gemini")
 	}
 }
 

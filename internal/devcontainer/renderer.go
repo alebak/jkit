@@ -3,12 +3,14 @@ package devcontainer
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"io/fs"
 	"strings"
 	"text/template"
 
 	"github.com/alebak/jkit"
+	"github.com/alebak/jkit/internal/agents"
 )
 
 // Render reads the named template from the embedded filesystem, processes
@@ -52,12 +54,12 @@ func renderTemplate(ctx context.Context, w io.Writer, name string, data any) err
 		return err
 	}
 	funcMap := template.FuncMap{
-		"json": func(v any) string {
+		"json": func(v any) (string, error) {
 			b, err := json.Marshal(v)
 			if err != nil {
-				return "[]"
+				return "", fmt.Errorf("json template func: %w", err)
 			}
-			return string(b)
+			return string(b), nil
 		},
 	}
 	tmpl, err := template.New(name).Funcs(funcMap).ParseFS(
@@ -71,7 +73,8 @@ func renderTemplate(ctx context.Context, w io.Writer, name string, data any) err
 }
 
 // renderPostCreate renders the post-create.sh template header and then
-// concatenates agent bash snippets for the selected agents.
+// concatenates agent bash snippets for the selected agents, wrapping
+// each with # --- agent:<name> --- / # --- end agent:<name> --- markers.
 func renderPostCreate(ctx context.Context, w io.Writer, data any) error {
 	if err := ctx.Err(); err != nil {
 		return err
@@ -88,9 +91,12 @@ func renderPostCreate(ctx context.Context, w io.Writer, data any) error {
 		return err
 	}
 
-	// Gather agent names to include: all if SelectedAgents is empty
+	// Determine selected agents:
+	//   - nil SelectedAgents means "include all" (default)
+	//   - empty slice means "include none" (explicit removal)
+	//   - non-empty slice means "include only these"
 	var selected map[string]bool
-	if d, ok := data.(DevcontainerData); ok && len(d.SelectedAgents) > 0 {
+	if d, ok := data.(DevcontainerData); ok && d.SelectedAgents != nil {
 		selected = make(map[string]bool)
 		for _, a := range d.SelectedAgents {
 			selected[strings.ToLower(a)] = true
@@ -102,24 +108,39 @@ func renderPostCreate(ctx context.Context, w io.Writer, data any) error {
 		return err
 	}
 
-	// Write a separator comment before agent snippets
-	if _, err := io.WriteString(w, "\n# --- Agent installations ---\n"); err != nil {
-		return err
-	}
-
+	// Collect matching agent names
+	var agentNames []string
 	for _, entry := range entries {
-		if err := ctx.Err(); err != nil {
-			return err
-		}
 		if entry.IsDir() || !strings.HasSuffix(entry.Name(), ".sh") {
 			continue
 		}
-		// Filter by SelectedAgents if specified
-		agentName := strings.TrimSuffix(entry.Name(), ".sh")
+		agentName := strings.ToLower(strings.TrimSuffix(entry.Name(), ".sh"))
 		if selected != nil && !selected[agentName] {
 			continue
 		}
-		content, err := jkit.AgentsFS.ReadFile("templates/agents/" + entry.Name())
+		agentNames = append(agentNames, agentName)
+	}
+
+	// Write the agent section header (only if there are agents)
+	if len(agentNames) > 0 {
+		if err := agents.WriteAgentMarkers(ctx, w, agentNames); err != nil {
+			return err
+		}
+	}
+
+	// Write each agent section wrapped in markers
+	for _, agentName := range agentNames {
+		if err := ctx.Err(); err != nil {
+			return err
+		}
+
+		// Start marker
+		if _, err := fmt.Fprintf(w, agents.AgentStartFmt, agentName); err != nil {
+			return err
+		}
+
+		// Agent bash content
+		content, err := jkit.AgentsFS.ReadFile("templates/agents/" + agentName + ".sh")
 		if err != nil {
 			return err
 		}
@@ -127,6 +148,11 @@ func renderPostCreate(ctx context.Context, w io.Writer, data any) error {
 			return err
 		}
 		if _, err := io.WriteString(w, "\n"); err != nil {
+			return err
+		}
+
+		// End marker
+		if _, err := fmt.Fprintf(w, agents.AgentEndFmt, agentName); err != nil {
 			return err
 		}
 	}

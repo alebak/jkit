@@ -445,6 +445,107 @@ func TestHelpFlag_ExitsWithZero(t *testing.T) {
 	}
 }
 
+func TestAgentsCommand_List(t *testing.T) {
+	buf := new(bytes.Buffer)
+	rootCmd.SetOut(buf)
+	rootCmd.SetErr(buf)
+	rootCmd.SetArgs([]string{"agents", "list"})
+
+	err := rootCmd.Execute()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	output := buf.String()
+	if !strings.Contains(output, "Available agents:") {
+		t.Errorf("expected 'Available agents:', got: %s", output)
+	}
+	if !strings.Contains(output, "claude") {
+		t.Errorf("expected claude in list, got: %s", output)
+	}
+	if !strings.Contains(output, "opencode") {
+		t.Errorf("expected opencode in list, got: %s", output)
+	}
+	if !strings.Contains(output, "gemini") {
+		t.Errorf("expected gemini in list, got: %s", output)
+	}
+}
+
+func TestAgentsCommand_AddNoArgs(t *testing.T) {
+	buf := new(bytes.Buffer)
+	rootCmd.SetOut(buf)
+	rootCmd.SetErr(buf)
+	rootCmd.SetArgs([]string{"agents", "add"})
+
+	err := rootCmd.Execute()
+	if err == nil {
+		t.Fatal("expected error for no args")
+	}
+}
+
+func TestAgentsCommand_RemoveNoArgs(t *testing.T) {
+	buf := new(bytes.Buffer)
+	rootCmd.SetOut(buf)
+	rootCmd.SetErr(buf)
+	rootCmd.SetArgs([]string{"agents", "remove"})
+
+	err := rootCmd.Execute()
+	if err == nil {
+		t.Fatal("expected error for no args")
+	}
+}
+
+func TestAgentsCommand_AddWithoutPostCreate(t *testing.T) {
+	dir := t.TempDir()
+	defer chdir(t, dir)()
+
+	buf := new(bytes.Buffer)
+	rootCmd.SetOut(buf)
+	rootCmd.SetErr(buf)
+	rootCmd.SetArgs([]string{"agents", "add", "claude"})
+
+	err := rootCmd.Execute()
+	if err == nil {
+		t.Fatal("expected error for missing post-create.sh")
+	}
+	if !strings.Contains(err.Error(), "jkit init") {
+		t.Errorf("expected error to mention 'jkit init', got: %v", err)
+	}
+}
+
+func TestAgentsCommand_RemoveWithoutPostCreate(t *testing.T) {
+	dir := t.TempDir()
+	defer chdir(t, dir)()
+
+	buf := new(bytes.Buffer)
+	rootCmd.SetOut(buf)
+	rootCmd.SetErr(buf)
+	rootCmd.SetArgs([]string{"agents", "remove", "claude"})
+
+	err := rootCmd.Execute()
+	if err == nil {
+		t.Fatal("expected error for missing post-create.sh")
+	}
+	if !strings.Contains(err.Error(), "jkit init") {
+		t.Errorf("expected error to mention 'jkit init', got: %v", err)
+	}
+}
+
+func TestAgentsCommand_AddInvalidAgent(t *testing.T) {
+	buf := new(bytes.Buffer)
+	rootCmd.SetOut(buf)
+	rootCmd.SetErr(buf)
+	rootCmd.SetArgs([]string{"agents", "add", "nonexistent"})
+
+	err := rootCmd.Execute()
+	if err == nil {
+		t.Fatal("expected error for invalid agent")
+	}
+	if !strings.Contains(err.Error(), "unknown") {
+		t.Errorf("expected error to mention 'unknown', got: %v", err)
+	}
+}
+
 // Test that the generator import compiles (from stubs_test.go)
 func TestStubPackagesCompile(t *testing.T) {
 	t.Log("All internal stub packages compile successfully: generator, agents, mcp")
