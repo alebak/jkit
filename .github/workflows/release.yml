@@ -1,8 +1,13 @@
 name: Release
 
 on:
-  push:
-    tags: ['v*']
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Release tag (e.g. v0.2.0)'
+        required: true
 
 permissions:
   contents: write
@@ -22,10 +27,12 @@ jobs:
         with: { go-version: '1.24' }
 
       - name: Build
+        env:
+          VERSION: ${{ github.event.release.tag_name || inputs.tag_name }}
         run: |
           mkdir -p dist
           GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} \
-            go build -ldflags="-s -w -X main.version=${GITHUB_REF_NAME}" \
+            go build -ldflags="-s -w -X main.version=${VERSION}" \
             -o dist/jkit-${{ matrix.goos }}-${{ matrix.goarch }} ./cmd/jkit/
 
       - name: Upload artifact
@@ -37,4 +44,5 @@ jobs:
       - name: Attach to release
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ github.event.release.tag_name || inputs.tag_name }}
           files: dist/**
