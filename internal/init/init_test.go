@@ -23,9 +23,9 @@ func TestParseImagesYAML_Valid(t *testing.T) {
 		},
 	}
 
-	images, err := ParseImagesYAML(fsys["images.yaml"].Data)
+	images, err := parseImagesYAML(fsys["images.yaml"].Data)
 	if err != nil {
-		t.Fatalf("ParseImagesYAML() error = %v", err)
+		t.Fatalf("parseImagesYAML() error = %v", err)
 	}
 
 	if len(images) != 2 {
@@ -50,7 +50,7 @@ func TestParseImagesYAML_EmptyList(t *testing.T) {
 		},
 	}
 
-	_, err := ParseImagesYAML(fsys["images.yaml"].Data)
+	_, err := parseImagesYAML(fsys["images.yaml"].Data)
 	if err == nil {
 		t.Fatal("expected error for empty images list, got nil")
 	}
@@ -67,7 +67,7 @@ func TestParseImagesYAML_Malformed(t *testing.T) {
 		},
 	}
 
-	_, err := ParseImagesYAML(fsys["images.yaml"].Data)
+	_, err := parseImagesYAML(fsys["images.yaml"].Data)
 	if err == nil {
 		t.Fatal("expected error for malformed YAML, got nil")
 	}
@@ -80,14 +80,14 @@ func TestParseImagesYAML_MissingKey(t *testing.T) {
 		},
 	}
 
-	_, err := ParseImagesYAML(fsys["images.yaml"].Data)
+	_, err := parseImagesYAML(fsys["images.yaml"].Data)
 	if err == nil {
 		t.Fatal("expected error for missing 'images' key, got nil")
 	}
 }
 
 func TestParseImagesYAML_FileNotFound(t *testing.T) {
-	_, err := ParseImagesYAML(nil)
+	_, err := parseImagesYAML(nil)
 	if err == nil {
 		t.Fatal("expected error for nil input, got nil")
 	}
@@ -434,7 +434,7 @@ func TestOrchestrateNoAgents(t *testing.T) {
 	}
 }
 
-// Additional triangulation: edge cases for ParseImagesYAML
+// Additional triangulation: edge cases for parseImagesYAML
 func TestParseImagesYAML_NonYAMLContent(t *testing.T) {
 	fsys := fstest.MapFS{
 		"images.yaml": &fstest.MapFile{
@@ -442,7 +442,7 @@ func TestParseImagesYAML_NonYAMLContent(t *testing.T) {
 		},
 	}
 
-	_, err := ParseImagesYAML(fsys["images.yaml"].Data)
+	_, err := parseImagesYAML(fsys["images.yaml"].Data)
 	if err == nil {
 		t.Fatal("expected error for non-YAML content, got nil")
 	}
@@ -455,7 +455,7 @@ func TestParseImagesYAML_EmptyFile(t *testing.T) {
 		},
 	}
 
-	_, err := ParseImagesYAML(fsys["images.yaml"].Data)
+	_, err := parseImagesYAML(fsys["images.yaml"].Data)
 	if err == nil {
 		t.Fatal("expected error for empty file, got nil")
 	}

@@ -27,8 +27,8 @@ func RunInteractive(ctx context.Context) (InitConfig, error) {
 	// Start with defaults
 	cfg := DefaultInitConfig()
 
-	// Parse images.yaml from embedded bytes
-	images, err := ParseImagesYAML(jkit.ImagesYAML)
+	// Load images (filesystem → cache → remote → defaults per DD-03)
+	images, err := LoadImages()
 	if err != nil {
 		return InitConfig{}, fmt.Errorf("loading images: %w", err)
 	}
