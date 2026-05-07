@@ -21,6 +21,9 @@ services:
       JOOMLA_SMTP_HOST: ${JOOMLA_SMTP_HOST}
     ports:
       - "8080:80"
+    depends_on:
+      db:
+        condition: service_healthy
     volumes:
       - ..:/var/www/html
       - ./php-custom.ini:/usr/local/etc/php/conf.d/docker-php-custom.ini
@@ -39,6 +42,11 @@ services:
       - "3306:3306"
     volumes:
       - db-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
 
   mail:
     image: axllent/mailpit
