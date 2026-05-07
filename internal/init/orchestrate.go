@@ -13,11 +13,10 @@ import (
 	"github.com/alebak/jkit"
 	"github.com/alebak/jkit/internal/agents"
 	"github.com/alebak/jkit/internal/devcontainer"
-	"github.com/alebak/jkit/internal/generator"
 	"github.com/alebak/jkit/internal/mcp"
 )
 
-// Orchestrate runs the full init pipeline: DEVC → AGNT → EXTG → MCPS.
+// Orchestrate runs the full init pipeline: DEVC → AGNT → MCPS.
 // Fails fast on first error; performs best-effort cleanup on failure.
 func Orchestrate(ctx context.Context, cfg InitConfig) error {
 	if err := ctx.Err(); err != nil {
@@ -82,13 +81,7 @@ func Orchestrate(ctx context.Context, cfg InitConfig) error {
 		}
 	}
 
-	// Step 3: EXTG — Generate default component extension
-	extData := generator.NewExtensionData(cfg.ProjectName, "jkit", generator.TypeComponent)
-	if _, err := generator.Generate(ctx, extData, cwd); err != nil {
-		return rollback(createdFiles, fmt.Errorf("EXTG generate: %w", err))
-	}
-
-	// Step 4: MCPS — Deploy MCP for playwright + mariadb to first agent's config
+	// Step 3: MCPS — Deploy MCP for playwright + mariadb to first agent's config
 	if len(cfg.Agents) > 0 {
 		firstAgent := cfg.Agents[0]
 		configPath, err := mcp.MCPConfigPathFor(ctx, firstAgent)
@@ -113,7 +106,7 @@ func Orchestrate(ctx context.Context, cfg InitConfig) error {
 		}
 	}
 
-	// Step 5: Create .gitignore and builds/ directory
+	// Step 4: Create .gitignore and builds/ directory
 	gitignorePath := filepath.Join(cwd, ".gitignore")
 	if err := appendGitignore(gitignorePath); err != nil {
 		return rollback(createdFiles, fmt.Errorf("creating .gitignore: %w", err))
