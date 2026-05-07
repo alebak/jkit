@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/alebak/jkit/compare/v0.3.0...v0.3.1) (2026-05-07)
+
+
+### Bug Fixes
+
+* merge release build into CI workflow for reliable asset attachment ([7aa8f7d](https://github.com/alebak/jkit/commit/7aa8f7dbe07e5c9f1352c5aca11a161287906dda))
+
 ## [0.3.0](https://github.com/alebak/jkit/compare/v0.2.3...v0.3.0) (2026-05-07)
 
 
