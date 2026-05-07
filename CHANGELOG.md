@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/alebak/jkit/compare/v0.3.1...v0.3.2) (2026-05-07)
+
+
+### Bug Fixes
+
+* remove default component generation from jkit init ([#7](https://github.com/alebak/jkit/issues/7)) ([6ff995c](https://github.com/alebak/jkit/commit/6ff995c66d3d108262a3244ffdf54f89f53b82f0))
+
 ## [0.3.1](https://github.com/alebak/jkit/compare/v0.3.0...v0.3.1) (2026-05-07)
 
 
