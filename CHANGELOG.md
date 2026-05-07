@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/alebak/jkit/compare/v0.2.3...v0.3.0) (2026-05-07)
+
+
+### Features
+
+* install jkit inside devcontainer via post-create.sh ([318db1a](https://github.com/alebak/jkit/commit/318db1aae678966293613fcdf852bdbf0b6fca1d))
+
 ## [0.2.3](https://github.com/alebak/jkit/compare/v0.2.2...v0.2.3) (2026-05-06)
 
 
