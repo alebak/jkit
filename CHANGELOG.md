@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.3](https://github.com/alebak/jkit/compare/v0.3.2...v0.3.3) (2026-05-07)
+
+
+### Bug Fixes
+
+* remove default component from init + auto-approve release PRs ([#9](https://github.com/alebak/jkit/issues/9)) ([c8eff32](https://github.com/alebak/jkit/commit/c8eff3224d685908ca4a66ec87f6974d5eb00751))
+
 ## [0.3.2](https://github.com/alebak/jkit/compare/v0.3.1...v0.3.2) (2026-05-07)
 
 
