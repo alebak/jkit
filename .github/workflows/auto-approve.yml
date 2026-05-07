@@ -9,9 +9,7 @@ permissions:
 
 jobs:
   approve:
-    if: |
-      github.actor == 'github-actions[bot]' &&
-      startsWith(github.event.pull_request.title, 'chore(main): release')
+    if: startsWith(github.event.pull_request.title, 'chore(main): release')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
