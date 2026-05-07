@@ -13,6 +13,14 @@ if ! grep -qF '.local/bin' "$HOME/.bashrc" 2>/dev/null; then
   echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
 fi
 
+# Install jkit (Joomla scaffolding toolkit)
+if command -v jkit &>/dev/null; then
+  echo "✅ jkit already installed"
+else
+  echo "📦 Installing jkit..."
+  curl -fsSL https://raw.githubusercontent.com/alebak/jkit/main/scripts/install.sh | bash
+fi
+
 # Install gentle-ai (always required)
 if command -v gentle-ai &>/dev/null; then
   echo "✅ gentle-ai already installed"
